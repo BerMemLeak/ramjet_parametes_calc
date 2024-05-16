@@ -22,8 +22,9 @@ private:
 	double fi_n ; // характеристика воздухозаборника 
 	double C_x_dop ; // характеристика воздухозаборника 
 	double n ; // соотношение расхода воздуха и топлива
+	double sigma_c = 1;
 	
-	
+	double q_lambda;
 	double betta;
 	double kappa;
 	double tetta_tetta;
@@ -92,6 +93,10 @@ public:
 		this->R_ud = (C_R * V_n * n) / ( 2 * fi_n * f_vx);
 		return R_ud;
 	};
+	double q_for_lambda(){
+		this->q_lambda = f_kr/(f_a*sigma_c);
+		return q_lambda;
+	};
 };
 
 int main(int argc, char *argv[]) {
@@ -105,12 +110,14 @@ int main(int argc, char *argv[]) {
 	std::cout <<"состовляющая каппа: " << d.kappa_func()<<std::endl;
 	std::cout <<"состовляющая тетта тетта: " << d.tetta_tetta_func()<<std::endl;
 	std::cout <<"С_тетта: " << d.C_tetta_func()<<std::endl;
-	std::cout <<"далее определяешь значение lambda_a по таблице: " <<std::endl;
+	std::cout <<"q(k,lambda): " << d.q_for_lambda()<<std::endl;
+
+	std::cout <<"далее определяешь значение lambda_a по таблице через q(lambda) и k:  " <<std::endl;
 	std::cout <<"введи lambda_a : " <<std::endl;
 	double lambda_a;
 	std::cin >> lambda_a;
 	d.set_lambda_a(lambda_a);
-	std::cout <<"С_R: " << d.C_R_func()<<std::endl;
+	std::cout <<"С_R: " << d.C_R_func() << " ---- < 1"<<std::endl;
 	std::cout <<"a_kr: " << d.a_kr_func()<<std::endl;
 	std::cout <<"V_n: " << d.V_n_func()<<std::endl;
 	std::cout <<"R_ud: " << d.R_ud_func()<<std::endl;

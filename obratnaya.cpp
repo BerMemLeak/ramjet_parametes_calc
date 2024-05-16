@@ -21,6 +21,8 @@ private:
 	double n = 16; // соотношение расхода воздуха и топлива
 	double C_R = 0.676547 ;// коэфф тяги
 	
+	double sigma_c = 1;
+	
 //ИЩЕМ
 	double f_vx ; //относительные площади сечения тракта ПВРД
 	double betta;
@@ -32,6 +34,7 @@ private:
 	double a_kr;
 	double V_n;
 	double R_ud;
+	double q_lambda;
 public:	
 	dvig(double M, double T, double Tp, double kk, double RR, double kb, double Rb, 
 		double CR, double fkr, double fa, double fin, double Cxdop, double nn) 
@@ -91,6 +94,12 @@ public:
 		this->R_ud = (C_R * V_n * n) / ( 2 * fi_n * f_vx);
 		return R_ud;
 	};
+	double q_for_lambda(){
+		this->q_lambda = f_kr/(f_a*sigma_c);
+		return q_lambda;
+	};
+	
+	
 };
 
 int main(int argc, char *argv[]) {
@@ -102,7 +111,8 @@ int main(int argc, char *argv[]) {
 	std::cout <<"состовляющая каппа: " << d.kappa_func()<<std::endl;
 	std::cout <<"состовляющая тетта тетта: " << d.tetta_tetta_func()<<std::endl;
 	std::cout <<"С_тетта: " << d.C_tetta_func()<<std::endl;
-	std::cout <<"далее определяешь значение lambda_a по таблице: " <<std::endl;
+	std::cout <<"q(k,lambda): " << d.q_for_lambda()<<std::endl;
+	std::cout <<"далее определяешь значение lambda_a по таблице через q(lambda) и k: " <<std::endl;
 	std::cout <<"введи lambda_a : " <<std::endl;
 	double lambda_a;
 	std::cin >> lambda_a;
